@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # How to run this script:
-# TOKEN=REPLACE_TOKEN_HERE NAME=Irwin COLOR=Red RIPE=True sh curl-scripts/mangos/create.sh
+# TOKEN=REPLACE_TOKEN_HERE NAME=Irwin COLOR=Red RIPE=True sh curl-scripts/local/mangos/create.sh
 
 curl "http://localhost:8000/mangos/" \
   --include \

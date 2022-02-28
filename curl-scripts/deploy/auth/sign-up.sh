@@ -1,7 +1,7 @@
 # How to run this script:
-# EMAIL=b@b.com PASSWORD=bbbbb sh curl-scripts/auth/sign-up.sh
+# EMAIL=b@b.com PASSWORD=bbbbb sh curl-scripts/deploy/auth/sign-up.sh
 
-curl "http://localhost:8000/sign-up/" \
+curl "https://bens-django-api.herokuapp.com/sign-up/" \
   --include \
   --request POST \
   --header "Content-Type: application/json" \
@@ -9,7 +9,7 @@ curl "http://localhost:8000/sign-up/" \
     "credentials": {
       "email": "'"${EMAIL}"'",
       "password": "'"${PASSWORD}"'",
-      "password_confirmation": "'"${PASSWORD}"'"
+      "passwordConfirmation": "'"${PASSWORD}"'"
     }
   }'
 
