@@ -56,4 +56,4 @@ class Practice(models.Model):
   )
 
   def __str__(self):
-    return str(self.__dict__)
+    return f"Practice for skill #{self.skill}"
