@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 
 from ..models.practice import Practice
 from ..serializers import PracticeSerializer
+import datetime
 
 # Create your views here.
 
@@ -90,6 +91,40 @@ class PracticeDetailView(generics.RetrieveUpdateDestroyAPIView):
         request.data['practice']['owner'] = request.user.id
         # Validate updates with serializer
         data = PracticeSerializer(practice, data=request.data['practice'], partial=True)
+        if data.is_valid():
+            # Save & send a 204 no content
+            data.save()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        # If the data is not valid, return a response with the errors
+        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class MarkPracticeDetailView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (IsAuthenticated,)
+
+    def partial_update(self, request, pk):
+        """Update Request"""
+        # Locate Practice
+        # get_object_or_404 returns a object representation of our Practice
+        practice = get_object_or_404(Practice, pk=pk)
+        # Check the practice's owner against the user making this request
+        if request.user != practice.owner:
+            raise PermissionDenied(
+                'Unauthorized, you do not own this practice')
+
+        # Ensure the owner field is set to the current user's ID
+        request.data['practice']['owner'] = request.user.id
+
+        # update last_practiced to today
+        today = datetime.date.today()
+        request.data['practice']['last_practiced'] = today
+
+        # set streak_start if first day
+        request.data['practice']['streak_start'] = today if practice.daysStreak == 0 else practice.streakStart
+
+        # Validate updates with serializer
+        data = PracticeSerializer(
+            practice, data=request.data['practice'], partial=True)
         if data.is_valid():
             # Save & send a 204 no content
             data.save()
