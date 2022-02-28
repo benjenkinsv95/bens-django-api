@@ -112,22 +112,19 @@ class MarkPracticeDetailView(generics.RetrieveUpdateDestroyAPIView):
             raise PermissionDenied(
                 'Unauthorized, you do not own this practice')
 
-        # Ensure the owner field is set to the current user's ID
-        request.data['practice']['owner'] = request.user.id
-
         # update last_practiced to today
         today = datetime.date.today()
-        request.data['practice']['last_practiced'] = today
-
-        # set streak_start if first day
-        request.data['practice']['streak_start'] = today if practice.daysStreak == 0 else practice.streakStart
+        practice_update = {
+            'last_practiced': today,
+            'streak_start': today if practice.streak_in_days == 0 else practice.streak_start
+        }
 
         # Validate updates with serializer
-        data = PracticeSerializer(
-            practice, data=request.data['practice'], partial=True)
-        if data.is_valid():
+        serializer = PracticeSerializer(
+            practice, data=practice_update, partial=True)
+        if serializer.is_valid():
             # Save & send a 204 no content
-            data.save()
+            serializer.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
         # If the data is not valid, return a response with the errors
-        return Response(data.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
