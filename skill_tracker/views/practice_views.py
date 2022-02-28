@@ -17,9 +17,9 @@ class PracticesView(generics.ListCreateAPIView):
     def get(self, request):
         """Index request"""
         # Get all the practices:
-        # practices = Practice.objects.all()
+        practices = Practice.objects.all()
         # Filter the practices by owner, so you can only see your owned practices
-        practices = Practice.objects.filter(owner=request.user.id)
+        # practices = Practice.objects.filter(owner=request.user.id)
         # Run the data through the serializer
         data = PracticeSerializer(practices, many=True).data
         return Response({'practices': data})
@@ -38,6 +38,18 @@ class PracticesView(generics.ListCreateAPIView):
         # If the data is not valid, return a response with the errors
         return Response(practice.errors, status=status.HTTP_400_BAD_REQUEST)
 
+
+class MyPracticesView(generics.ListCreateAPIView):
+    permission_classes = (IsAuthenticated,)
+    serializer_class = PracticeSerializer
+
+    def get(self, request):
+        """Index request"""
+        # Filter the practices by owner, so you can only see your owned practices
+        practices = Practice.objects.filter(owner=request.user.id)
+        # Run the data through the serializer
+        data = PracticeSerializer(practices, many=True).data
+        return Response({'practices': data})
 
 class PracticeDetailView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (IsAuthenticated,)

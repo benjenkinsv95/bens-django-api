@@ -1,6 +1,6 @@
 from django.urls import path
 from .views.skill_views import SkillsView, SkillDetailView
-from .views.practice_views import PracticesView, PracticeDetailView
+from .views.practice_views import PracticesView, PracticeDetailView, MyPracticesView
 
 urlpatterns = [
     # Restful routing
@@ -9,4 +9,6 @@ urlpatterns = [
 
     path('practices/', PracticesView.as_view(), name='practices'),
     path('practices/<int:pk>/', PracticeDetailView.as_view(), name='practice_detail'),
+
+    path('my-practices/', MyPracticesView.as_view(), name='practices'),
 ]
