@@ -16,12 +16,3 @@ class Mango(models.Model):
   def __str__(self):
     # This must return a string
     return f"The mango named '{self.name}' is {self.color} in color. It is {self.ripe} that it is ripe."
-
-  def as_dict(self):
-    """Returns dictionary version of Mango models"""
-    return {
-        'id': self.id,
-        'name': self.name,
-        'ripe': self.ripe,
-        'color': self.color
-    }

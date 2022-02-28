@@ -1,7 +1,7 @@
 # How to run this script:
 # TOKEN=REPLACE_TOKEN_HERE OLDPW=bbbbb NEWPW=ccccc sh curl-scripts/local/auth/change-pw.sh
 
-curl "http://localhost:8000/change-pw/" \
+curl "http://localhost:8000/skill-tracker/change-pw/" \
   --include \
   --request PATCH \
   --header "Content-Type: application/json" \

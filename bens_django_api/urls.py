@@ -18,5 +18,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('api.urls')),
+    # Add the auth urls under skill-tracker
+    path('skill-tracker/', include('api.urls')),
+    # Add all the skill-tracker urls there as well (to support multiple apps later)
+    path('skill-tracker/', include('skill_tracker.urls')),
 ]
